@@ -38,7 +38,7 @@ def login():
                 if flag:
                     flag, error = db.login(username, password)
                     if flag:
-                        click.echo('You are successfully logged in as {0}'.format(username)')
+                        click.echo('You are successfully logged in as {0}'.format(username))
                     else:
                         click.echo(error)
                 else:

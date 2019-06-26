@@ -1,0 +1,4 @@
+
+        [console_scripts]
+        cf=cf.main:cli
+    

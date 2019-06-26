@@ -1,6 +1,5 @@
 import api
 
-
 def user_profile(user_handle):
     """ Printing user profile from Codeforces """
     end_point_url = 'https://codeforces.com/api/user.info?handles={}'.format(user_handle)

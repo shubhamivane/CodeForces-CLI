@@ -78,4 +78,21 @@ def logout():
     else:
         conn.close()
         return flag, error        
-            
+
+def update(username, password):
+    flag = True
+    error = None
+    try:
+        conn = connection()
+        sql = 'UPDATE User SET password = ? WHERE username = ?'
+        ip = (password, username)
+        conn.execute(sql, ip)
+        return flag, ''
+    except sqlite3.IntegrityError as error:
+        flag = False
+    except:
+        error = 'unknown error'
+        flag = False
+    else:
+        conn.close()
+        return flag, error

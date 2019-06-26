@@ -1,4 +1,4 @@
-import api
+from . import api
 
 def user_profile(user_handle):
     """ Printing user profile from Codeforces """

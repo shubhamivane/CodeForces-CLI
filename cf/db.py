@@ -18,15 +18,15 @@ def logged_in():
     error = None
     try:
         conn = connection()
-        with conn:
-            sql = 'SELECT * FROM User WHERE logged_in = 1'
-            cursor = conn.execute(sql)
-            if not cursor is None:
-                result = cursor.fetchone()
-                error = result[0]
-            else:
-                flag = False
-                error = 'No one is logged in'
+        cursor = conn.cursor()
+        sql = 'SELECT * FROM User WHERE logged_in = 1'
+        result = cursor.execute(sql)
+        row = result.fetchone()
+        if not row is None:
+            error = row[0]
+        else:
+            flag = False
+            error = 'No one is logged in'
     except sqlite3.IntegrityError as error:
         flag = False
     else:
@@ -38,20 +38,23 @@ def login(username, password):
     error = None
     try:
         conn = connection()
-        with conn:
-            credentials = tuple(username, password)
-            sql = 'SELECT * FROM User WHERE username = ? AND password = ?'
-            cursor = conn.execute(sql, credentials) # query returns None if no row is selected
-            if not cursor is None:
-                conn.execute('UPDATE User SET logged_in = 1 WHERE username = ? ',(username))
-                return flag, ''
-            else:
-                sql = 'SELECT * FROM User WHERE username = ?'
-                cursor = conn.execute(sql, (username,))
-                if not cursor is None:
-                    return flag, 'Try on CodeForces'
-                flag = False
-                error = 'Invalid username or password'
+        cursor = conn.cursor()
+        credentials = (username, password)
+        sql = 'SELECT * FROM User WHERE username = ? AND password = ?'
+        result = cursor.execute(sql, credentials) # query returns None if no row is selected
+        row = result.fetchone()
+        if not row is None:
+            cursor.execute('UPDATE User SET logged_in = 1 WHERE username = ? ',(username,))
+            conn.commit()
+            return flag, ''
+        else:
+            sql = 'SELECT * FROM User WHERE username = ?'
+            result = cursor.execute(sql, (username,))
+            row = result.fetchone()
+            if not row is None:
+                return flag, 'Try on CodeForces'
+            flag = False
+            error = 'Invalid username or password'
     except sqlite3.IntegrityError as error:
         flag = False
     else:
@@ -63,16 +66,16 @@ def logout():
     error = None
     try:
         conn = connection()
-        with conn:
-            flag, username = logged_in()
-            if flag:
-                sql = 'UPDATE User SET logged_in = 0 WHERE username = ?'
-                conn.execute(sql, (username))
-                error = '{} is successfully logged out'.format(username)
-            else:
-                flag = False
-                error = 'No user is logged in'
-            
+        cursor = conn.cursor()
+        flag, username = logged_in()
+        if flag:
+            sql = 'UPDATE User SET logged_in = 0 WHERE username = ?'
+            cursor.execute(sql, (username,))
+            error = '{} is successfully logged out'.format(username)
+        else:
+            flag = False
+            error = 'No user is logged in'
+        conn.commit()    
     except sqlite3.IntegrityError as error:
         flag = False
     else:
@@ -84,9 +87,10 @@ def update(username, password):
     error = None
     try:
         conn = connection()
+        cursor = conn.cursor()
         sql = 'UPDATE User SET password = ? WHERE username = ?'
         ip = (password, username)
-        conn.execute(sql, ip)
+        cursor.execute(sql, ip)
         return flag, ''
     except sqlite3.IntegrityError as error:
         flag = False
@@ -96,3 +100,21 @@ def update(username, password):
     else:
         conn.close()
         return flag, error
+
+def write(username, password):
+    flag = True
+    error = None
+    try:
+        conn = connection()
+        cursor = conn.cursor()
+        sql = 'INSERT INTO User VALUES (?, ?, ?)'
+        cursor.execute(sql, (username, password, 1))
+        conn.commit()
+    except sqlite3.IntegrityError as error:
+        flag = False
+    else:
+        conn.close()
+        return flag, error
+
+if __name__ == "__main__":
+    print(logged_in())

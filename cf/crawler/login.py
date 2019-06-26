@@ -18,19 +18,6 @@ headers = {
         'Referer'     : 'https://codeforces.com/enter',
         'User-Agent'  : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'        
 }
-
-def get_CSRF_token(url):
-    try:
-        response = requests.get(url, headers=headers)
-        soup = BeautifulSoup(response.content)
-        csrf_token = soup.find('input', {'name': 'csrf_token'})['value']
-        return csrf_token, ''
-    except requests.exceptions.Timeout as error:
-        return None, error
-    except requests.exceptions.TooManyRedirects as error:
-        return None, error
-    except requests.exceptions.HTTPError as error:
-        return None, error
     
 def login(username, password):
     user_data['handleOrEmail'] = username
@@ -38,16 +25,27 @@ def login(username, password):
     try:
         with requests.Session() as session:
             url = 'https://codeforces.com/enter'
-            csrf_token, error = get_CSRF_token(url)
-            if not csrf_token is None:
-                user_data['csrf_token'] = csrf_token
-                response = session.post(url, data = urlencode(user_data), headers = headers)
-                if response.status_code == 302:
-                    return session, ''
-                else:
-                    return None, 'Invalid Handle/Email address or password'
+            response = session.get(url, headers = headers)
+            soup = BeautifulSoup(response.content, 'html.parser')
+            soup_result = soup.find('input', {'name' : 'csrf_token'})
+            if not soup_result is None:
+                user_data['csrf_token'] = soup_result['value']
+                try:
+                    response = session.post(url, data = urlencode(user_data), headers = headers)
+                    soup = BeautifulSoup(response.content, 'html.parser')
+                    soup_result = soup.find('a', {'href': '/profile/{0}'.format(username)})
+                    if not soup_result is None:
+                        return session, ''
+                    else:
+                        return None, 'Invalid Credentials'
+                except requests.exceptions.Timeout as error:
+                    return None, error
+                except requests.exceptions.TooManyRedirects as error:
+                    return None, error
+                except requests.exceptions.HTTPError as error:
+                    return None, error
             else:
-                return False, error
+                return None, 'Couldn\'t get CSRF Token'
     except requests.exceptions.Timeout as error:
         return None, error
     except requests.exceptions.TooManyRedirects as error:
@@ -61,3 +59,6 @@ def verify_credentials(username, password):
         return False, error
     else:
         return True, ''
+
+if __name__ == "__main__":
+    print(login('ivane_shubham', 'shubham@22403354'))

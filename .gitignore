@@ -1,2 +1,3 @@
 __pycache__
 cf_cli.egg-info
+*.sqlite3

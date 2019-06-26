@@ -22,7 +22,7 @@ def upcoming_contest():
             contest_list = list(map(lambda contest: (contest[1], convert_sec_to_date(contest[0])), contest_list)) 
         else:
             contest_list[0][0], contest_list[0][1] = contest_list[0][1], convert_sec_to_date(contest_list[0][0])
-        return contest_list
+        return contest_list, ''
     
     else:
         return None, error

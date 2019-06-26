@@ -5,7 +5,9 @@ setup(
     version = '1.0',
     py_modules = ['cf'],
     install_requires = [
-        'Click',    
+        'Click',
+        'requests',
+        'beautifulsoup4'
     ],
     entry_points = '''
         [console_scripts]

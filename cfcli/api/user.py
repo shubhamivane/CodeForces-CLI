@@ -19,9 +19,6 @@ def user_profile(user_handle):
         del user['titlePhoto']
         return user, error
 
-def user_contest_history():
-    pass
-
 if __name__ == '__main__':
     print(user_profile('ivane_shubham'))
     

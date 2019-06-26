@@ -11,7 +11,6 @@ def upcoming_contest():
     end_point_url = 'https://codeforces.com/api/contest.list?gym=false'
     json_response, error = api.call_api(end_point_url)
     if not json_response is None:
-        flag = True
         contest_list = []
         for contest in json_response:
             if contest['relativeTimeSeconds'] < 0:

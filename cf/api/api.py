@@ -18,7 +18,9 @@ def call_api(api_end_point):
         return None, error
     except requests.exceptions.HTTPError as error:
         return None, error
+    except requests.exceptions.ConnectionError:
+        return None, 'Failed to establish a connection.'
 
 if __name__ == '__main__':
-    end_point_url = 'https://codeforces.com/api/user.info?handles=ivane_shubha'
+    end_point_url = 'https://codeforces.com/api/user.info?handles=ivane_shubham'
     print(call_api(end_point_url))

@@ -52,6 +52,8 @@ def login(username, password):
         return None, error
     except requests.exceptions.HTTPError as error:
         return None, error
+    except requests.exceptions.ConnectionError:
+        return None, 'Failed to establish a connection.'
 
 def verify_credentials(username, password):
     session, error = login(username, password)

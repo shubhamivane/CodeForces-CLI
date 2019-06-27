@@ -17,9 +17,14 @@ def cli():
     click.echo('\n')
 
 @cli.command()
-def user():
+@click.option('-h', '--handle', help='Handle whose profile want to see')
+def profile(handle):
     """ Prints the user information """
-    flag, username = db.logged_in()
+    flag = True
+    if handle is None:
+        flag, username = db.logged_in()
+    else:
+        username = handle
     if flag:
         user, error = user_profile(username)
         if not user is None:
@@ -34,11 +39,10 @@ def user():
             click.echo('\t Friends              : {0}'.format(user['friendOfCount']))
             click.echo('------------------------------------------------------------')
         else:
-            click.echo(error)
+            click.echo('\t\t{0}'.format(error))
     else:
-        click.echo('\t\t Please login first')
+        click.echo('\t\t Provide username to profile command or login to CF-CLI')
         
-
 @cli.command()
 def login():
     """ Login to codeforces """

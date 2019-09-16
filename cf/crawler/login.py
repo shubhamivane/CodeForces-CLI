@@ -18,7 +18,7 @@ headers = {
         'Referer'     : 'https://codeforces.com/enter',
         'User-Agent'  : 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36'        
 }
-    
+
 def login(username, password):
     user_data['handleOrEmail'] = username
     user_data['password'] = password
@@ -59,6 +59,3 @@ def verify_credentials(username, password):
         return False, error
     else:
         return True, ''
-
-if __name__ == "__main__":
-    print(login('ivane_shubham', 'shubham@22403354'))

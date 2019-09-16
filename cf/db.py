@@ -59,7 +59,7 @@ def login(username, password):
         flag = False
     else:
         conn.close()
-        return flag, error     
+        return flag, error
 
 def logout():
     flag = True
@@ -75,12 +75,12 @@ def logout():
         else:
             flag = False
             error = 'No user is logged in'
-        conn.commit()    
+        conn.commit()
     except sqlite3.IntegrityError as error:
         flag = False
     else:
         conn.close()
-        return flag, error        
+        return flag, error
 
 def update(username, password):
     flag = True

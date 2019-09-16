@@ -23,16 +23,15 @@ def upcoming_contest():
         else:
             contest_list[0][0], contest_list[0][1] = contest_list[0][1], convert_sec_to_date(contest_list[0][0])
         return contest_list, ''
-    
     else:
         return None, error
-    
+
 def contest_history(username):
     end_point_url = 'https://codeforces.com/api/user.rating?handle={}'.format(username)
     json_response, error = api.call_api(end_point_url)
     if not json_response is None:
         length = len(json_response)
-        contest_list = [] 
+        contest_list = []
         if length == 0:
             return [], 'No contest history'
         else:
@@ -47,8 +46,3 @@ def contest_history(username):
             return contest_list, ''
     else:
         return None, error
-
-if __name__ == '__main__':
-    #print(upcoming_contest())
-    print(contest_history('ivane_shubham'))
-    

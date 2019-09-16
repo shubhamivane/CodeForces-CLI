@@ -37,7 +37,7 @@ def user():
             click.echo(error)
     else:
         click.echo('\t\t Please login first')
-        
+
 
 @cli.command()
 def login():
@@ -45,7 +45,7 @@ def login():
     flag, username = db.logged_in()
     if flag == False:
         print('Handle  : ', end='')
-        username = input() 
+        username = input()
         password = getpass.getpass()
         flag, error = db.login(username, password)
         if flag and len(error) == 0:

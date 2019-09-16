@@ -2,3 +2,6 @@ __pycache__
 */__pycache__
 cf_cli.egg-info
 *.sqlite3
+.DS_store
+.
+..

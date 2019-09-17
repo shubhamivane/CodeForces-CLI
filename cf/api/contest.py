@@ -5,7 +5,6 @@ def convert_sec_to_date(sec):
     """ Convert miliseconds in date i.e. Wednesday, 26 June 2019 08:05PM """
     return datetime.datetime.fromtimestamp(sec).strftime('%A, %d %B %Y %I:%M%p')
 
-
 def upcoming_contest():
     """ Printing upcoming contests on Codeforces """
     end_point_url = 'https://codeforces.com/api/contest.list?gym=false'

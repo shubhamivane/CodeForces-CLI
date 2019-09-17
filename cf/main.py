@@ -47,30 +47,30 @@ def login():
         password = getpass.getpass()
         flag, error = db.login(username, password)
         if flag and len(error) == 0:
-            click.echo('\t\t You are successfully logged in as {0}'.format(username))
+            click.echo('\t\t You are successfully logged in as {0}.'.format(username))
         elif flag:
             print(flag)
-            click.echo('\t\t Different credentials from database')
-            click.echo('\t\t Verifying credentials on Codeforces')
+            click.echo('\t\t Different credentials from database.')
+            click.echo('\t\t Verifying credentials on Codeforces.')
             flag, error = verify_credentials(username, password)
             if flag:
                 flag, error = db.update(username, password)
                 if flag:
                     flag, error = db.login(username, password)
                     if flag:
-                        click.echo('\t\t You are successfully logged in as {0}'.format(username))
+                        click.echo('\t\t You are successfully logged in as {0}.'.format(username))
                     else:
                         click.echo(error)
                 else:
                     click.echo(error)
             else:
-                click.echo('\t\t Couldn\'t verify credentials on Codeforces')
+                click.echo('\t\t Couldn\'t verify credentials on Codeforces.')
                 click.echo(error)
         else:
             flag, error = verify_credentials(username, password)
             if flag:
                 db.write(username, password)
-                click.echo('\t\t You are successfully logged in as {0}'.format(username))
+                click.echo('\t\t You are successfully logged in as {0}.'.format(username))
             else:
                 click.echo(error)
     else:

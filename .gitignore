@@ -5,3 +5,4 @@ cf_cli.egg-info
 .DS_store
 .
 ..
+cfcliDB.sqlite3

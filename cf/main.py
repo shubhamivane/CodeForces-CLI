@@ -1,5 +1,6 @@
 import click
 import getpass
+from pyfiglet import Figlet
 from . import db
 from .api.contest import upcoming_contest
 from .api.contest import contest_history
@@ -9,12 +10,9 @@ from .crawler.login import verify_credentials
 @click.group()
 def cli():
     """ CLI tool for Codeforces """
-    click.echo('\t\t  ___   ____    ___   _      _____')
-    click.echo('\t\t / __| |  __|  / __| | |    |_   _|')
-    click.echo('\t\t| |    | |__  | |    | |      | |')
-    click.echo('\t\t| |__  |  __| | |__  | |__   _| |_')
-    click.echo('\t\t \___| |_|     \___| |____| |_____| ')
-    click.echo('\n')
+    figlet = Figlet(font = 'slant')
+    print(figlet.renderText('CFCLI'))
+    print(figlet.renderText('Shubham'))
 
 @cli.command()
 def user():
